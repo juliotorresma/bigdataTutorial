@@ -14,4 +14,4 @@ https://www.anaconda.com/download
 
 # 4.- Sigue el siguiente tutorial para instalar wget
 
-https://www.anaconda.com/download
+https://builtvisible.com/download-your-website-with-wget/
