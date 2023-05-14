@@ -22,7 +22,7 @@ def extract_data(params):
     else:
         csv_name = 'output.csv'
 
-    os.system(f"wget {url} -O data/{csv_name}")
+    os.system(f"wget {url} -O {csv_name}")
 
     df_iter = pd.read_csv(csv_name, iterator=True, chunksize=100000)
 
@@ -31,7 +31,7 @@ def extract_data(params):
     df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
     df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
 
-    return df
+    return df, csv_name
 
 @task(log_prints=True)
 def transform_data(df):
@@ -43,15 +43,23 @@ def transform_data(df):
     return df
 
 @task(log_prints=True, retries=3)
-def ingest_data(params, df):
+def ingest_data(params, df, csv_name):
 
     table_name = params.table_name
-    connection_block = SqlAlchemyConnector.load('postres-connector')
+    #connection_block = SqlAlchemyConnector.load('postres-connector')
 
-    with connection_block.get_connection(begin=False) as engine:
+    engine = create_engine(f'postgresql://root:root@pgdatabase:5432/ny_taxi')
 
-        df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace')
-        df.to_sql(name=table_name, con=engine, if_exists='append')
+    df_iter = pd.read_csv(csv_name, iterator=True, chunksize=100000)
+
+    df = next(df_iter)
+
+    df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
+    df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
+
+    df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace')
+
+    df.to_sql(name=table_name, con=engine, if_exists='append')
 
 
 @flow(name="Ingest Flow")
@@ -62,9 +70,9 @@ def main_flow():
     parser.add_argument('--url', required=True, help='url of the csv file')
 
     args = parser.parse_args()
-    raw_data = extract_data(args)
+    raw_data, csv_name = extract_data(args)
     data = transform_data(raw_data)
-    ingest_data(args, data)
+    ingest_data(args, data, csv_name)
 
 if __name__ == '__main__':
     main_flow()
