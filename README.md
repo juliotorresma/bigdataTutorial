@@ -46,7 +46,7 @@ docker run -it --network=pg-network taxi_ingest --table_name=yellow_taxi_trips -
 
 ## Ejercicio #2
 
-- Regresa a el directorio bigdataTutorial
+- Regresa a el directorio ./bigdataTutorial
 - Crear conda enviroment
 
 ```
