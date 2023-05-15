@@ -19,6 +19,8 @@ https://builtvisible.com/download-your-website-with-wget/
 
 # Instrucciones a seguir en el taller
 
+## Ejercicio #1
+
 - Descargar este repositorio
 - Abir Docker
 - Abrir Visual Studio Code
@@ -40,5 +42,21 @@ docker compose up
 
 ```
 docker run -it --network=pg-network taxi_ingest --table_name=yellow_taxi_trips --url=https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz 
+```
+
+## Ejercicio n.2
+
+- Crear conda enviroment
+
+```
+conda create -n sii_bigdata python=3.9
+```
+
+- Activar conda enviroment e instalar pip
+
+```
+conda activate sii_bigdata
+
+conda install pip
 ```
 
