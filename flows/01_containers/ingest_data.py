@@ -17,15 +17,12 @@ def extract_data(params):
     
     # the backup files are gzipped, and it's important to keep the correct extension
     # for pandas to be able to open the file
-    if url.endswith('.csv.gz'):
-        csv_name = 'output.csv.gz'
-    else:
-        csv_name = 'output.csv'
+    if url.endswith('.csv.gz'): csv_name = 'output.csv.gz'
+    else: csv_name = 'output.csv'
 
     os.system(f"wget {url} -O {csv_name}")
 
     df_iter = pd.read_csv(csv_name, iterator=True, chunksize=100000)
-
     df = next(df_iter)
 
     df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
@@ -46,29 +43,24 @@ def transform_data(df):
 def ingest_data(params, df, csv_name):
 
     table_name = params.table_name
-    #connection_block = SqlAlchemyConnector.load('postres-connector')
-
     engine = create_engine(f'postgresql://root:root@pgdatabase:5432/ny_taxi')
 
     df_iter = pd.read_csv(csv_name, iterator=True, chunksize=100000)
-
     df = next(df_iter)
 
     df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
     df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
 
     df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace')
-
     df.to_sql(name=table_name, con=engine, if_exists='append')
 
 
 @flow(name="Ingest Flow")
 def main_flow():
-    parser = argparse.ArgumentParser(description='Ingest CSV data to Postgres')
 
+    parser = argparse.ArgumentParser(description='Ingest CSV data to Postgres')
     parser.add_argument('--table_name', required=True, help='name of the table where we will write the results to')
     parser.add_argument('--url', required=True, help='url of the csv file')
-
     args = parser.parse_args()
     raw_data, csv_name = extract_data(args)
     data = transform_data(raw_data)
