@@ -22,7 +22,7 @@ https://builtvisible.com/download-your-website-with-wget/
 - Descargar este repositorio
 - Abir Docker
 - Abrir Visual Studio Code
-- Entrar a 01_contenedores
+- Entrar a ./flows/01_contenedores
 - Hacer build a contenedor de script ingest_data.py
 
 ```
@@ -41,3 +41,4 @@ docker compose up
 ```
 docker run -it --network=pg-network taxi_ingest --table_name=yellow_taxi_trips --url=https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz 
 ```
+
