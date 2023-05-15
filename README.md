@@ -44,7 +44,7 @@ docker compose up
 docker run -it --network=pg-network taxi_ingest --table_name=yellow_taxi_trips --url=https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz 
 ```
 
-## Ejercicio n.2
+## Ejercicio #2
 
 - Crear conda enviroment
 
@@ -56,7 +56,12 @@ conda create -n sii_bigdata python=3.9
 
 ```
 conda activate sii_bigdata
-
+```
+```
 conda install pip
 ```
-
+- Ve a el directorio bigdataTutorial
+- Instalar requirements.txt
+```
+pip install -r /path/to/requirements.txt
+```
