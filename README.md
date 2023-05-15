@@ -46,6 +46,7 @@ docker run -it --network=pg-network taxi_ingest --table_name=yellow_taxi_trips -
 
 ## Ejercicio #2
 
+- Regresa a el directorio bigdataTutorial
 - Crear conda enviroment
 
 ```
@@ -60,8 +61,17 @@ conda activate sii_bigdata
 ```
 conda install pip
 ```
-- Ve a el directorio bigdataTutorial
 - Instalar requirements.txt
 ```
 pip install -r /path/to/requirements.txt
+```
+- Ve al directorio flows/02_etl
+- Inicia Prefect Orion
+```
+prefect orion start
+```
+- Crea tu bloque de GCS Bucket
+- Corre script en local
+```
+python etl_web_to_gcs.py
 ```
