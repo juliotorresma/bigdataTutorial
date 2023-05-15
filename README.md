@@ -24,6 +24,7 @@ https://builtvisible.com/download-your-website-with-wget/
 - Abrir Visual Studio Code
 - Entrar a 01_contenedores
 - Hacer build a contenedor de script ingest_data.py
-'''
+
+```
 docker build -t taxi_ingest .
-'''
+```
